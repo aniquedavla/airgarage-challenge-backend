@@ -14,9 +14,9 @@ app.get('/', (req, res) => {
     res.json('Hello World!');
 })
 
-app.get('/search/:location', (request, response) => {
-    console.log("location", request.params.location);
-    let locationRequested = request.params.location;
+app.get('/parking-lots', async (request, response) => {
+    console.log("location", request.query.location);
+    let locationRequested = request.query.location;
     let config = {
         headers: {
             "Authorization": `Bearer ${API_KEY}`,
@@ -32,7 +32,7 @@ app.get('/search/:location', (request, response) => {
   try {
     axios.get("https://api.yelp.com/v3/businesses/search", config).then((data)=>{
         let parkingLots = data.data.businesses;
-        console.log("Data", data)
+        // console.log("Data", data)
         let sortedLots = parkingLots.sort((obj1, obj2)=>{
             return obj1.rating - obj2.rating;
         }); 
@@ -40,7 +40,7 @@ app.get('/search/:location', (request, response) => {
             return obj.rating < 3;
         });
         let scoredLowestLots = lowestLots.map((lot)=>{
-            console.log(lot)
+            // console.log(lot)
             let numOfReviews = lot.review_count;
             let rating = lot.rating;
             let score = (numOfReviews * rating) / (numOfReviews + 1);
