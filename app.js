@@ -12,6 +12,7 @@ app.use(express.json())
 
 app.get('/', (req, res) => {
     res.json('Hello World!');
+    
 })
 
 app.get('/parking-lots', async (request, response) => {
